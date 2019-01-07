@@ -2,7 +2,7 @@
 
 """A MQTT to InfluxDB Bridge
 
-This script receives MQTT data and save those in InfluxDB.
+This script receives MQTT data and saves those to InfluxDB.
 
 """
 
@@ -14,7 +14,7 @@ from influxdb import InfluxDBClient
 
 INFLUXDB_ADDRESS = '192.168.1.37'
 MQTT_ADDRESS = 'test.mosquitto.org'
-MQTT_TOPIC = 'oklmzer/home/+/+'  # [inside|outside][temperature|humidity|status]
+MQTT_TOPIC = 'oklmzer/home/+/+'  # [inside|outside]/[temperature|humidity|status]
 
 influxdb_client = InfluxDBClient(INFLUXDB_ADDRESS, 8086)
 
