@@ -1,16 +1,16 @@
 /**
     Required libraries:
-      - DHT sensor library by Adafruit
+      - Adafruit BME280 Library
       - Adafruit Unified Sensor
       - PubSubClient
 **/
 
-#include <DHT.h>
+#include <Wire.h>
+#include <SPI.h>
+#include <Adafruit_Sensor.h>
+#include <Adafruit_BME280.h>
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
-
-#define DHTPIN D4
-#define DHTTYPE DHT22
 
 #define MQTT_TOPIC_HUMIDITY "oklmzer/home/livingroom/humidity"
 #define MQTT_TOPIC_TEMPERATURE "oklmzer/home/livingroom/temperature"
@@ -18,18 +18,21 @@
 #define MQTT_PUBLISH_DELAY 5000
 #define MQTT_CLIENT_ID "esp8266LivingRoom"
 
-const char* WIFI_SSID = "your-ssid";
-const char* WIFI_PASSWORD = "your-password";
+#define BME280_ADDRESS 0x76
+#define BME280_SEALEVELPRESSURE_HPA 1013.25
 
-const char* MQTT_SERVER = "test.mosquitto.org";
-const char* MQTT_USER = NULL; // User name. NULL for no authentication
-const char* MQTT_PASSWORD = NULL; // Password. NULL for no authentication
+const char *WIFI_SSID = "your-ssid";
+const char *WIFI_PASSWORD = "your-password";
+
+const char *MQTT_SERVER = "test.mosquitto.org";
+const char *MQTT_USER = NULL; // User name. NULL for no authentication
+const char *MQTT_PASSWORD = NULL; // Password. NULL for no authentication
 
 float humidity;
 float temperature;
 long lastMsgTime = 0;
 
-DHT dht(DHTPIN, DHTTYPE);
+Adafruit_BME280 bme;
 WiFiClient espClient;
 PubSubClient mqttClient(espClient);
 
@@ -37,9 +40,13 @@ void setup() {
   Serial.begin(115200);
   while (! Serial);
 
+  if (!bme.begin(BME280_ADDRESS)) {
+    Serial.println("Could not find a valid BME280 sensor, check wiring or BME-280 address!");
+    while (1);
+  }
+
   setupWifi();
   mqttClient.setServer(MQTT_SERVER, 1883);
-  dht.begin();
 }
 
 void loop() {
@@ -52,11 +59,11 @@ void loop() {
   if (now - lastMsgTime > MQTT_PUBLISH_DELAY) {
     lastMsgTime = now;
 
-    // Reading DHT22 sensor data
-    humidity = dht.readHumidity();
-    temperature = dht.readTemperature();
+    // Reading BME280 sensor data
+    humidity = bme.readHumidity();
+    temperature = bme.readTemperature();
     if (isnan(humidity) || isnan(temperature)) {
-      Serial.println("DHT22 sensor is not ready yet");
+      Serial.println("BME280 reading issues");
       return;
     }
 
@@ -102,7 +109,7 @@ void mqttReconnect() {
   }
 }
 
-void mqttPublish(char* topic, float payload) {
+void mqttPublish(char *topic, float payload) {
   Serial.print(topic);
   Serial.print(": ");
   Serial.println(payload);
