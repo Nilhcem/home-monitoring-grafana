@@ -18,6 +18,8 @@ INFLUXDB_PASSWORD = 'root'
 INFLUXDB_DATABASE = 'home_db'
 
 MQTT_ADDRESS = 'homeserver'
+MQTT_USER = 'mqttuser'
+MQTT_PASSWORD = 'mqttpassword'
 MQTT_TOPIC = 'home/+/+'  # [bme280|mijia]/[temperature|humidity|battery|status]
 MQTT_REGEX = 'home/([^/]+)/([^/]+)'
 MQTT_CLIENT_ID = 'MQTTInfluxDBBridge'
@@ -83,6 +85,7 @@ def main():
     _init_influxdb_database()
 
     mqtt_client = mqtt.Client(MQTT_CLIENT_ID)
+    mqtt_client.username_pw_set(MQTT_USER, MQTT_PASSWORD)
     mqtt_client.on_connect = on_connect
     mqtt_client.on_message = on_message
 
