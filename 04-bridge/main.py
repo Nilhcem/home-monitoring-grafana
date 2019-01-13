@@ -67,7 +67,7 @@ def _send_sensor_data_to_influxdb(sensor_data):
 
 
 def main():
-    influxdb_client.switch_database('influx_db')
+    influxdb_client.switch_database('home_db')
 
     mqtt_client = mqtt.Client('MQTTInfluxDBBridge')
     mqtt_client.on_connect = on_connect
