@@ -19,6 +19,7 @@ INFLUXDB_DATABASE = 'home_db'
 
 MQTT_ADDRESS = 'homeserver'
 MQTT_TOPIC = 'home/+/+'  # [bme280|mijia]/[temperature|humidity|battery|status]
+MQTT_REGEX = 'home/([^/]+)/([^/]+)'
 MQTT_CLIENT_ID = 'MQTTInfluxDBBridge'
 
 influxdb_client = InfluxDBClient(INFLUXDB_ADDRESS, 8086, INFLUXDB_USER, INFLUXDB_PASSWORD, None)
@@ -45,7 +46,7 @@ def on_message(client, userdata, msg):
 
 
 def _parse_mqtt_message(topic, payload):
-    match = re.match('oklmzer/home/([^/]+)/([^/]+)', topic)
+    match = re.match(MQTT_REGEX, topic)
     if match:
         location = match.group(1)
         measurement = match.group(2)
