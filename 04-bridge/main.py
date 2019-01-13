@@ -12,9 +12,9 @@ from typing import NamedTuple
 import paho.mqtt.client as mqtt
 from influxdb import InfluxDBClient
 
-INFLUXDB_ADDRESS = '192.168.1.37'
-MQTT_ADDRESS = 'test.mosquitto.org'
-MQTT_TOPIC = 'oklmzer/home/+/+'  # [inside|outside]/[temperature|humidity|status]
+INFLUXDB_ADDRESS = 'homeserver'
+MQTT_ADDRESS = 'homeserver'
+MQTT_TOPIC = 'home/+/+'  # [bme280|mijia]/[temperature|humidity|battery|status]
 
 influxdb_client = InfluxDBClient(INFLUXDB_ADDRESS, 8086)
 
