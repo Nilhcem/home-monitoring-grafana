@@ -19,7 +19,6 @@
 #define MQTT_CLIENT_ID "esp8266bme280"
 
 #define BME280_ADDRESS 0x76
-#define BME280_SEALEVELPRESSURE_HPA 1013.25
 
 const char *WIFI_SSID = "your-ssid";
 const char *WIFI_PASSWORD = "your-password";
