@@ -1,19 +1,34 @@
-Install dependencies:
-# pip install -r requirements.txt
+## Install dependencies
+
+```sh
+sudo pip install -r requirements.txt
+```
 
 Run:
+
+```sh
 ./main.py
+```
 
+## Install bluepy on Raspberry:
 
-Install bluepy on Raspberry:
+```sh
 $ sudo apt-get install python-pip libglib2.0-dev
 $ sudo pip3 install -r requirements.txt
 $ ./main.py
-
+```
 
 Run when you boot into the LXDE environment
-* sudo nano ~/.config/lxsession/LXDE-pi/autostart
+
+```sh
+sudo nano ~/.config/lxsession/LXDE-pi/autostart
+```
+
 Add at the end of file:
+
+```
 @python3 /home/pi/mijia/main.py
+```
+
 Restart your Raspberry Pi into the LXDE environment.
 
