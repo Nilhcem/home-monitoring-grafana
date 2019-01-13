@@ -13,10 +13,15 @@ import paho.mqtt.client as mqtt
 from influxdb import InfluxDBClient
 
 INFLUXDB_ADDRESS = 'homeserver'
+INFLUXDB_USER = 'root'
+INFLUXDB_PASSWORD = 'root'
+INFLUXDB_DATABASE = 'home_db'
+
 MQTT_ADDRESS = 'homeserver'
 MQTT_TOPIC = 'home/+/+'  # [bme280|mijia]/[temperature|humidity|battery|status]
+MQTT_CLIENT_ID = 'MQTTInfluxDBBridge'
 
-influxdb_client = InfluxDBClient(INFLUXDB_ADDRESS, 8086)
+influxdb_client = InfluxDBClient(INFLUXDB_ADDRESS, 8086, INFLUXDB_USER, INFLUXDB_PASSWORD, None)
 
 
 class SensorData(NamedTuple):
@@ -35,16 +40,16 @@ def on_message(client, userdata, msg):
     """The callback for when a PUBLISH message is received from the server."""
     print(msg.topic + ' ' + str(msg.payload))
     sensor_data = _parse_mqtt_message(msg.topic, msg.payload.decode('utf-8'))
-    if (sensor_data is not None):
+    if sensor_data is not None:
         _send_sensor_data_to_influxdb(sensor_data)
 
 
 def _parse_mqtt_message(topic, payload):
-    matchObj = re.match('oklmzer/home/([^/]+)/([^/]+)', topic)
-    if matchObj:
-        location = matchObj.group(1)
-        measurement = matchObj.group(2)
-        if (measurement == 'status'):
+    match = re.match('oklmzer/home/([^/]+)/([^/]+)', topic)
+    if match:
+        location = match.group(1)
+        measurement = match.group(2)
+        if measurement == 'status':
             return None
         return SensorData(location, measurement, float(payload))
     else:
@@ -66,10 +71,17 @@ def _send_sensor_data_to_influxdb(sensor_data):
     influxdb_client.write_points(json_body)
 
 
-def main():
-    influxdb_client.switch_database('home_db')
+def _init_influxdb_database():
+    databases = influxdb_client.get_list_database()
+    if len(list(filter(lambda x: x['name'] == INFLUXDB_DATABASE, databases))) == 0:
+        influxdb_client.create_database(INFLUXDB_DATABASE)
+    influxdb_client.switch_database(INFLUXDB_DATABASE)
 
-    mqtt_client = mqtt.Client('MQTTInfluxDBBridge')
+
+def main():
+    _init_influxdb_database()
+
+    mqtt_client = mqtt.Client(MQTT_CLIENT_ID)
     mqtt_client.on_connect = on_connect
     mqtt_client.on_message = on_message
 
