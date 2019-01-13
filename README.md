@@ -69,8 +69,27 @@ $ chmod o+w /tmp/grafana
 $ docker run -d -p 3000:3000 -v /tmp/grafana:/var/lib/grafana --name=grafana grafana/grafana #grafana/grafana:master on RPi
 ```
 
-You can then access grafana from `http://homeserver:3000` and log in with `admin/admin`.
-InfluxDB user/password: root/root
+- Access Grafana from `http://homeserver:3000`
+- Log in with user/password `admin/admin`
+- Go to Configuration > Data Sources
+- Add data source (InfluxDB)
+  - Name: `InfluxDB`
+  - URL: `http://homeserver:8086`
+  - Database: `home_db`
+  - User: `root`
+  - Password: `root`
+  - Save & Test
+- Create a Dashboard
+  - Edit Panel
+  - Queries: InfluxDB
+  - FROM: `[default] [temperature] WHERE [location]=[bme280]`
+  - SELECT: `field(value)`
+  - FORMAT AS: `Time series`
+  - Draw mode: Lines
+  - Stacking & Null value: Null value [connected]
+  - Left Y
+    - Unit: Temperature > Celcius
+  - Panel title: Temperature (°C)
 
 
 ### Mijia (optional)
