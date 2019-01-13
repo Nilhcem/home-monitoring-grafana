@@ -8,17 +8,17 @@ import time
 import paho.mqtt.client as mqtt
 from bluepy import btle
 
-MQTT_TOPIC_HUMIDITY = 'oklmzer/home/livingroom/humidity'
-MQTT_TOPIC_TEMPERATURE = 'oklmzer/home/livingroom/temperature'
-MQTT_TOPIC_BATTERY = 'oklmzer/home/livingroom/battery'
-MQTT_TOPIC_STATE = 'oklmzer/home/livingroom/status'
+MQTT_TOPIC_HUMIDITY = 'home/mijia/humidity'
+MQTT_TOPIC_TEMPERATURE = 'home/mijia/temperature'
+MQTT_TOPIC_BATTERY = 'home/mijia/battery'
+MQTT_TOPIC_STATE = 'home/mijia/status'
 
 MQTT_PUBLISH_DELAY = 30
-MQTT_CLIENT_ID = 'rpiLivingRoom'
+MQTT_CLIENT_ID = 'mijia'
 
-MQTT_SERVER = 'test.mosquitto.org'
-MQTT_USER = None
-MQTT_PASSWORD = None
+MQTT_SERVER = 'homeserver'
+MQTT_USER = 'mqttuser'
+MQTT_PASSWORD = 'mqttpassword'
 
 MIJIA_BTLE_ADDRESS = '4c:65:a8:d7:fb:36'
 
