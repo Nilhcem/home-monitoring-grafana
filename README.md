@@ -32,6 +32,7 @@ $ cd 03-mosquitto
 $ mkdir -p /tmp/mosquitto/data /tmp/mosquitto/log
 $ chmod o+w /tmp/mosquitto /tmp/mosquitto/data /tmp/mosquitto/log
 $ docker run -d -p 1883:1883 -v $PWD/mosquitto.conf:/mosquitto/config/mosquitto.conf -v $PWD/users:/mosquitto/config/users -v /tmp/mosquitto/data:/mosquitto/data -v /tmp/mosquitto/log:/mosquitto/log --name mosquitto eclipse-mosquitto:1.5
+$ cd -
 ```
 
 
@@ -44,6 +45,22 @@ $ docker run -d -p 8086:8086 -v /tmp/influxdb:/var/lib/influxdb --name influxdb 
 ```
 
 
+### MQTT -> InfluxDB bridge
+
+```sh
+$ cd 04-bridge
+$ docker build -t nilhcem/mqttbridge .
+$ docker run -d --name mqttbridge nilhcem/mqttbridge
+$ cd -
+```
+
+
+### ESP8266 BME280
+
+- Update the `WIFI_SSID` and `WIFI_PASSWORD` with your WiFi data
+- Flash the `esp8266.ino` file.
+
+
 ### Grafana
 
 ```sh
@@ -53,22 +70,12 @@ $ docker run -d -p 3000:3000 -v /tmp/grafana:/var/lib/grafana --name=grafana gra
 ```
 
 You can then access grafana from `http://homeserver:3000` and log in with `admin/admin`.
+InfluxDB user/password: root/root
 
 
-### MQTT->InfluxDB bridge
+### Mijia (optional)
 
-```sh
-$ cd 04-bridge
-$ docker build -t nilhcem/mqttbridge .
-$ docker run -d --name mqttbridge nilhcem/mqttbridge
-```
-
-
-### ESP8266 BME280
-
-- Update the `WIFI_SSID` and `WIFI_PASSWORD` with your WiFi data
-- Optionally update the `MQTT_SERVER`, `MQTT_USER` and `MQTT_PASSWORD` constants.
-- Flash the `esp8266.ino` file.
+See `02-mijia_ble_mqtt/README.md`.
 
 
 ### Credentials
@@ -81,4 +88,7 @@ $ docker run -d --name mqttbridge nilhcem/mqttbridge
 $ cd 03-mosquitto
 $ echo -n "" > users
 $ docker run --rm -v `pwd`/mosquitto.conf:/mosquitto/config/mosquitto.conf -v `pwd`/users:/mosquitto/config/users eclipse-mosquitto:1.5 mosquitto_passwd -b /mosquitto/config/users [USER] [PASSWORD]
+$ cd -
 ```
+
+Update the MQTT_USER and MQTT_PASSWORD constants from all the projects.
