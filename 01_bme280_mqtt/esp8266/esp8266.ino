@@ -44,6 +44,13 @@ void setup() {
     while (1);
   }
 
+  // Use force mode so that the sensor returns to sleep mode when the measurement is finished
+  bme.setSampling(Adafruit_BME280::MODE_FORCED,
+                  Adafruit_BME280::SAMPLING_X1, // temperature
+                  Adafruit_BME280::SAMPLING_NONE, // pressure
+                  Adafruit_BME280::SAMPLING_X1, // humidity
+                  Adafruit_BME280::FILTER_OFF);
+
   setupWifi();
   mqttClient.setServer(MQTT_SERVER, 1883);
 }
@@ -59,6 +66,7 @@ void loop() {
     lastMsgTime = now;
 
     // Reading BME280 sensor data
+    bme.takeForcedMeasurement(); // has no effect in normal mode
     humidity = bme.readHumidity();
     temperature = bme.readTemperature();
     if (isnan(humidity) || isnan(temperature)) {
