@@ -15,7 +15,7 @@
 #define MQTT_TOPIC_HUMIDITY "home/bme280/humidity"
 #define MQTT_TOPIC_TEMPERATURE "home/bme280/temperature"
 #define MQTT_TOPIC_STATE "home/bme280/status"
-#define MQTT_PUBLISH_DELAY 5000
+#define MQTT_PUBLISH_DELAY 60000
 #define MQTT_CLIENT_ID "esp8266bme280"
 
 #define BME280_ADDRESS 0x76

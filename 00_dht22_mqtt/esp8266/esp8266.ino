@@ -15,7 +15,7 @@
 #define MQTT_TOPIC_HUMIDITY "home/dht22/humidity"
 #define MQTT_TOPIC_TEMPERATURE "home/dht22/temperature"
 #define MQTT_TOPIC_STATE "home/dht22/status"
-#define MQTT_PUBLISH_DELAY 10000
+#define MQTT_PUBLISH_DELAY 60000
 #define MQTT_CLIENT_ID "esp8266dht22"
 
 const char* WIFI_SSID = "your-ssid";

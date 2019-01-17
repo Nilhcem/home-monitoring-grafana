@@ -13,7 +13,7 @@ MQTT_TOPIC_TEMPERATURE = 'home/mijia/temperature'
 MQTT_TOPIC_BATTERY = 'home/mijia/battery'
 MQTT_TOPIC_STATE = 'home/mijia/status'
 
-MQTT_PUBLISH_DELAY = 30
+MQTT_PUBLISH_DELAY = 60
 MQTT_CLIENT_ID = 'mijia'
 
 MQTT_SERVER = 'homeserver'
