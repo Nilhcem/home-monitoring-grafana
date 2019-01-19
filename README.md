@@ -66,7 +66,7 @@ $ cd -
 ```sh
 $ mkdir -p /tmp/grafana
 $ chmod o+w /tmp/grafana
-$ docker run -d -p 3000:3000 -v /tmp/grafana:/var/lib/grafana --name=grafana grafana/grafana #grafana/grafana:master on RPi
+$ docker run -d -p 3000:3000 -v /tmp/grafana:/var/lib/grafana --name=grafana grafana/grafana:5.4.3
 ```
 
 - Access Grafana from `http://homeserver:3000`
