@@ -80,8 +80,9 @@ $ docker run -d -p 3000:3000 -v /tmp/grafana:/var/lib/grafana --name=grafana gra
   - Password: `root`
   - Save & Test
 - Create a Dashboard
+  - Add Graph Panel
   - Edit Panel
-  - Queries: InfluxDB
+  - Data Source: InfluxDB
   - FROM: `[default] [temperature] WHERE [location]=[bme280]`
   - SELECT: `field(value)`
   - FORMAT AS: `Time series`
