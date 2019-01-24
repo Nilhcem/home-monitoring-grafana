@@ -1,34 +1,24 @@
+# Bluetooth LE to MQTT bridge for the Xiaomi Mijia Temperature & Humidity sensor
+
+## Update constants in main.py
+
+- Update the `MQTT_SERVER` constant with the address of the MQTT server.
+- Update the `MIJIA_BTLE_ADDRESS` constant with the BLE address of your Mijia device.
+
+
 ## Install dependencies
 
-```sh
-sudo pip install -r requirements.txt
-```
+You'll need to install bluez and python3. Then you'll need pip3 to install bluepy.
 
-Run:
-
-```sh
-./main.py
-```
-
-## Install bluepy on Raspberry:
-
+Example on a Raspberry Pi 3:
 ```sh
 $ sudo apt-get install python-pip libglib2.0-dev
 $ sudo pip3 install -r requirements.txt
-$ ./main.py
 ```
 
-Run when you boot into the LXDE environment
+
+## Run
 
 ```sh
-sudo nano ~/.config/lxsession/LXDE-pi/autostart
+$ ./main.py
 ```
-
-Add at the end of file:
-
-```
-@python3 /home/pi/mijia/main.py
-```
-
-Restart your Raspberry Pi into the LXDE environment.
-
