@@ -2,11 +2,11 @@
 
 ## Projects
 
-- `00_dht22_mqtt`: Arduino sketch file for the ESP8266 and the DHT22 that publishes sensor data to MQTT
-- `01_bme280_mqtt`: Arduino sketch file for the ESP8266 and the BME280 that publishes sensor data to MQTT
-- `02_mijia_ble_mqt`: Python script for the Raspberry Pi 3 that connects to a BTLE MiJia Temperature & Humidity sensor and publishes data to MQTT
-- `03-mosquitto`: Mosquitto docker container
-- `04-bridge`: Python script that receives MQTT data and persists those to InfluxDB
+- `01-mosquitto`: Mosquitto docker container
+- `02-bridge`: Python script that receives MQTT data and persists those to InfluxDB
+- `03-bme280_mqtt`: Arduino sketch file for the ESP8266 and the BME280 that publishes sensor data to MQTT
+- `04-mijia_ble_mqt`: Python script for the Raspberry Pi 3 that connects to a BTLE MiJia Temperature & Humidity sensor and publishes data to MQTT
+- `05-dht22_mqtt`: Arduino sketch file for the ESP8266 and the DHT22 that publishes sensor data to MQTT
 
 
 ## Setup
@@ -29,7 +29,7 @@ To change these, see the `Credentials` section
 ### Mosquitto
 
 ```sh
-$ cd 03-mosquitto
+$ cd 01-mosquitto
 $ mkdir -p /tmp/mosquitto/data /tmp/mosquitto/log
 $ chmod o+w /tmp/mosquitto /tmp/mosquitto/data /tmp/mosquitto/log
 $ docker run -d -p 1883:1883 -v $PWD/mosquitto.conf:/mosquitto/config/mosquitto.conf -v $PWD/users:/mosquitto/config/users -v /tmp/mosquitto/data:/mosquitto/data -v /tmp/mosquitto/log:/mosquitto/log --name mosquitto eclipse-mosquitto:1.5
@@ -49,7 +49,7 @@ $ docker run -d -p 8086:8086 -v /tmp/influxdb:/var/lib/influxdb --name influxdb 
 ### MQTT -> InfluxDB bridge
 
 ```sh
-$ cd 04-bridge
+$ cd 02-bridge
 $ docker build -t nilhcem/mqttbridge .
 $ docker run -d --name mqttbridge nilhcem/mqttbridge
 $ cd -
@@ -96,7 +96,7 @@ $ docker run -d -p 3000:3000 -v /tmp/grafana:/var/lib/grafana --name=grafana gra
 
 ### Mijia (optional)
 
-See `02-mijia_ble_mqtt/README.md`.
+See `04-mijia_ble_mqtt/README.md`.
 
 
 ### Credentials
@@ -106,7 +106,7 @@ See `02-mijia_ble_mqtt/README.md`.
 - Run the following, replacing `[USER]` and `[PASSWORD]`
 
 ```sh
-$ cd 03-mosquitto
+$ cd 01-mosquitto
 $ echo -n "" > users
 $ docker run --rm -v `pwd`/mosquitto.conf:/mosquitto/config/mosquitto.conf -v `pwd`/users:/mosquitto/config/users eclipse-mosquitto:1.5 mosquitto_passwd -b /mosquitto/config/users [USER] [PASSWORD]
 $ cd -
