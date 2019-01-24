@@ -26,7 +26,8 @@ Create data directories with write access:
 
 ```sh
 mkdir -p ${DATA_DIR}/mosquitto/data ${DATA_DIR}/mosquitto/log ${DATA_DIR}/influxdb ${DATA_DIR}/grafana
-chmod o+w ${DATA_DIR}/mosquitto/data ${DATA_DIR}/mosquitto/log ${DATA_DIR}/influxdb ${DATA_DIR}/grafana
+sudo chown -R 1883:1883 ${DATA_DIR}/mosquitto
+sudo chown -R 472:472 ${DATA_DIR}/grafana
 ```
 
 Run docker compose:
