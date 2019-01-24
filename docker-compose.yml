@@ -1,0 +1,43 @@
+version: '3'
+
+services:
+  mosquitto:
+    image: eclipse-mosquitto:1.5
+    container_name: mosquitto
+    ports:
+      - 1883:1883
+    volumes:
+      - ./01-mosquitto/mosquitto.conf:/mosquitto/config/mosquitto.conf
+      - ./01-mosquitto/users:/mosquitto/config/users
+      - ${DATA_DIR}/mosquitto/data:/mosquitto/data
+      - ${DATA_DIR}/mosquitto/log:/mosquitto/log
+    restart: always
+
+  influxdb:
+    image: influxdb:1.7-alpine
+    container_name: influxdb
+    ports:
+      - 8086:8086
+    volumes:
+      - ${DATA_DIR}/influxdb:/var/lib/influxdb
+    restart: always
+
+  grafana:
+    image: grafana/grafana:5.4.3
+    container_name: grafana
+    depends_on:
+      - influxdb
+    ports:
+      - 3000:3000
+    volumes:
+      - ${DATA_DIR}/grafana:/var/lib/grafana
+    restart: always
+
+  mqttbridge:
+    build: ./02-bridge
+    image: nilhcem/mqttbridge
+    container_name: mqttbridge
+    depends_on:
+      - mosquitto
+      - influxdb
+    restart: always
