@@ -1,4 +1,7 @@
-# Home sensor data with Mosquitto, InfluxDB, Grafana and  Docker
+# Home sensor data monitoring with MQTT, InfluxDB and Grafana
+
+Blog post: [http://nilhcem.com/iot/home-monitoring-with-mqtt-influxdb-grafana](http://nilhcem.com/iot/home-monitoring-with-mqtt-influxdb-grafana)  
+
 
 ## Projects
 
