@@ -100,15 +100,15 @@ Then, update the `MQTT_USER` and `MQTT_PASSWORD` constants in all the subdirecto
 
 ```sh
 $ cd 01-mosquitto
-$ docker run -d -p 1883:1883 -v $PWD/mosquitto.conf:/mosquitto/config/mosquitto.conf -v $PWD/users:/mosquitto/config/users -v /tmp/mosquitto/data:/mosquitto/data -v /tmp/mosquitto/log:/mosquitto/log --name mosquitto eclipse-mosquitto:1.5
+$ docker run -d -p 1883:1883 -v $PWD/mosquitto.conf:/mosquitto/config/mosquitto.conf -v $PWD/users:/mosquitto/config/users -v $DATA_DIR/mosquitto/data:/mosquitto/data -v $DATA_DIR/mosquitto/log:/mosquitto/log --name mosquitto eclipse-mosquitto:1.5
 $ cd -
 
-$ docker run -d -p 8086:8086 -v /tmp/influxdb:/var/lib/influxdb --name influxdb influxdb:1.7
+$ docker run -d -p 8086:8086 -v $DATA_DIR/influxdb:/var/lib/influxdb --name influxdb influxdb:1.7
 
 $ cd 02-bridge
 $ docker build -t nilhcem/mqttbridge .
 $ docker run -d --name mqttbridge nilhcem/mqttbridge
 $ cd -
 
-$ docker run -d -p 3000:3000 -v /tmp/grafana:/var/lib/grafana --name=grafana grafana/grafana:5.4.3
+$ docker run -d -p 3000:3000 -v $DATA_DIR/grafana:/var/lib/grafana --name=grafana grafana/grafana:5.4.3
 ```
